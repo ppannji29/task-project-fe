@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { Pencil } from "lucide-react"
 import DashboardLayout from "@/components/layout/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -179,6 +180,14 @@ export default function TaskPage() {
 
                         <span className="text-xs text-gray-600">Due: {new Date(task.due_date).toLocaleDateString()}</span>
                     </div>
+                    <Button
+                        variant="outline"
+                        className="mt-4 bg-blue-50 text-blue-700 hover:bg-blue-100 flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-md transition-all"
+                        onClick={() => router.push(`/task/view/${task.id}`)}
+                        >
+                        <Pencil className="w-4 h-4" />
+                        View / Edit
+                    </Button>
                 </CardContent>
               </Card>
             ))}

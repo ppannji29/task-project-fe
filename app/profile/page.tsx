@@ -294,7 +294,7 @@ export default function ProfilePage() {
             </div>
             <div className="flex items-center space-x-2">
               {!isEditing ? (
-                <Button
+                <Button disabled
                   onClick={() => setIsEditing(true)}
                   variant="outline"
                   className="flex items-center space-x-2 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200"

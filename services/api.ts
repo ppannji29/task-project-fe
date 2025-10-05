@@ -141,4 +141,13 @@ export const apiService = {
     priority: string
     due_date: string
   }) => apiClient.post("/api/task", data),
+  getTaskById: (id: string) => apiClient.get(`/api/task/${id}`),
+  updateTask: (id: string, data: {
+    title: string
+    description: string
+    status: string
+    priority: string
+    due_date: string
+  }) => apiClient.patch(`/api/task/${id}`, data),
+  deleteTask: (id: string) => apiClient.delete(`/api/task/${id}`),
 }
