@@ -13,6 +13,8 @@ export function middleware(request: NextRequest) {
     "/dashboard/users",
     "/dashboard/users/create",
     "/dashboard/temporary",
+    "/task/listing",
+    "/task/create",
   ]
   const isPublicRoute = publicRoutes.includes(pathname)
   
