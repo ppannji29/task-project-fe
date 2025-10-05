@@ -44,6 +44,12 @@ export default function Sidebar({ onLogout, isOpen, onToggle, onClose, isMobile,
       active: pathname === "/profile"
     },
     {
+      title: "Task",
+      icon: FileText,
+      href: "/task/listing",
+      active: pathname === "/task"
+    },
+    {
       title: "Users",
       icon: Users,
       href: "/user",

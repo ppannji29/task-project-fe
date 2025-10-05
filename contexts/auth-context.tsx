@@ -53,10 +53,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const logout = () => {
         console.log("🔄 Auto logout triggered")
         setUser(null)
-        // Simpan current path sebelum redirect ke login
-        // if (pathname && pathname !== "/auth/login") {
-        //   sessionStorage.setItem("redirectAfterLogin", pathname)
-        // }
+        apiService.logout()
         router.push("/auth/login")
       }
 
@@ -67,22 +64,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const refreshUserToken = async (): Promise<boolean> => {
     try {
-      // console.log("🔄 Attempting manual token refresh...")
-      
-      const response = await apiService.refreshToken("")
+      const response = await apiService.refreshToken()
       console.log("✅ Manual token refresh successful:", response.data)
-      
-      // Get updated user info
+  
       const userResponse = await apiService.getCurrentUser()
       console.log("RESPONSE ME: ", userResponse)
       setUser(userResponse.data)
-      
+  
       return true
     } catch (error) {
       console.error("❌ Manual token refresh failed:", error)
       return false
     }
   }
+
   const getRedirectPath = (): string => {
     // Cek apakah ada redirect path yang disimpan
     const savedRedirect = sessionStorage.getItem("redirectAfterLogin")

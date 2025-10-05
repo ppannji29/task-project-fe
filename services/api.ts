@@ -1,8 +1,7 @@
 import axios from "axios"
 import Cookies from "js-cookie"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
-// || "http://localhost:3000"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -31,10 +30,10 @@ const processQueue = (error: any, token: string | null = null) => {
 // Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config) => {
-    const token = Cookies.get("access_token")
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
+    // const token = Cookies.get("access_token")
+    // if (token) {
+    //   config.headers.Authorization = `Bearer ${token}`
+    // }
     return config
   },
   (error) => {
@@ -50,7 +49,6 @@ apiClient.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        // If already refreshing, queue this request
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject })
         }).then(token => {
@@ -75,9 +73,9 @@ apiClient.interceptors.response.use(
         
         if (newAccessToken) {
           // Update cookies
-          Cookies.set("access_token", newAccessToken, { expires: 7 })
+          Cookies.set("access_token", newAccessToken)
           if (newRefreshToken) {
-            Cookies.set("refresh_token", newRefreshToken, { expires: 30 })
+            Cookies.set("refresh_token", newRefreshToken)
           }
 
           // Update the original request
@@ -85,14 +83,11 @@ apiClient.interceptors.response.use(
           
           // Process queued requests
           processQueue(null, newAccessToken)
-          
-          // Retry original request
           return apiClient(originalRequest)
         }
       } catch (refreshError: any) {
         console.error("❌ Token refresh failed:", refreshError)
         
-        // Clear tokens and redirect to login
         Cookies.remove("access_token")
         Cookies.remove("refresh_token")
         
@@ -113,16 +108,37 @@ apiClient.interceptors.response.use(
 )
 
 export const apiService = {
-  // Health check
   healthCheck: () => apiClient.get("/"),
-  // Auth endpoints
+
+  // authentication request
   requestOtp: (email: string) => apiClient.post("/api/auth/request-otp", { email }),
   verifyOtp: (email: string, otp: string) => apiClient.post("/api/auth/verify-otp", { email, otp }),
-  refreshToken: (refreshToken: string) => apiClient.post("/api/auth/refresh", { refresh_token: refreshToken }),
-  logout: () => apiClient.post("/api/auth/logout"),
-  // User endpoints
-  getCurrentUser: () => apiClient.get("/api/user/me"),
-  getUsers: (params: any) => apiClient.get("/api/users", { params }),
-  getUserById: (id: string) => apiClient.get(`/api/users/detail?id=${id}`),
-  createUserForm: (params: FormData) => apiClient.post("/api/users/create/form", params, {headers: { "Content-Type": "multipart/form-data" }}),
+  refreshToken: () => apiClient.post("/api/auth/refresh", {}, { withCredentials: true }),
+  logout: () => apiClient.delete("/api/auth/logout"),
+  // get me
+  getCurrentUser: () => apiClient.get("/api/user/me", { withCredentials: true }),
+
+  // task request
+  getTaskListing: (params?: {
+    status?: string
+    priority?: string
+    title?: string
+    sort?: string
+    order?: string
+    page?: number
+    limit?: number
+  }) => {
+    const query = new URLSearchParams()
+    Object.entries(params || {}).forEach(([key, val]) => {
+      if (val !== undefined && val !== null) query.append(key, String(val))
+    })
+    return apiClient.get(`/api/tasks?${query.toString()}`)
+  },
+  createTask: (data: {
+    title: string
+    description: string
+    status: string
+    priority: string
+    due_date: string
+  }) => apiClient.post("/api/task", data),
 }
