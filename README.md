@@ -43,21 +43,6 @@ The frontend integrates with the following backend endpoints:
 - `GET /api/users` - Get all users
 - `GET /api/users/detail` - Get user by ID
 
-## Project Structure
-
-\`\`\`
-├── app/
-│   ├── auth/login/          # Login page
-│   ├── dashboard/           # Dashboard page
-│   ├── globals.css          # Global styles
-│   ├── layout.tsx           # Root layout
-│   └── page.tsx             # Home page
-├── components/ui/           # UI components
-├── contexts/                # React contexts
-├── services/                # API services
-└── middleware.ts            # Route protection
-\`\`\`
-
 ## Technologies Used
 
 - Next.js 14 (App Router)
@@ -65,4 +50,3 @@ The frontend integrates with the following backend endpoints:
 - Tailwind CSS
 - Axios for API calls
 - js-cookie for cookie management
-- shadcn/ui components
