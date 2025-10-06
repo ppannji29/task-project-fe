@@ -103,7 +103,6 @@ export default function ProfilePage() {
     
     try {
       const response = await apiService.getCurrentUser()
-      console.log("RESPONSE ME: ", response)
       const userData = response.data.data
       setProfile(userData)
       

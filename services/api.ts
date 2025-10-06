@@ -30,10 +30,6 @@ const processQueue = (error: any, token: string | null = null) => {
 // Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config) => {
-    // const token = Cookies.get("access_token")
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`
-    // }
     return config
   },
   (error) => {
@@ -63,7 +59,7 @@ apiClient.interceptors.response.use(
       isRefreshing = true
 
       try {
-        const response = await axios.post(`${API_BASE_URL}/api/auth/refresh`, {}, {
+        const response = await axios.post(`${API_BASE_URL}/api/auth/refresh-token`, {}, {
           withCredentials: true
         })
         

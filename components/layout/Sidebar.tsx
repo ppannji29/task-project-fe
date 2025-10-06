@@ -37,36 +37,18 @@ export default function Sidebar({ onLogout, isOpen, onToggle, onClose, isMobile,
       href: "/dashboard",
       active: pathname === "/dashboard"
     },
-    {
-      title: "Profile",
-      icon: User,
-      href: "/profile",
-      active: pathname === "/profile"
-    },
+    // {
+    //   title: "Profile",
+    //   icon: User,
+    //   href: "/profile",
+    //   active: pathname === "/profile"
+    // },
     {
       title: "Task",
       icon: FileText,
       href: "/task/listing",
       active: pathname === "/task"
     },
-    // {
-    //   title: "Users",
-    //   icon: Users,
-    //   href: "/user",
-    //   active: pathname === "/user"
-    // },
-    // {
-    //   title: "Reports",
-    //   icon: FileText,
-    //   href: "/reports",
-    //   active: pathname === "/reports"
-    // },
-    // {
-    //   title: "Analytics",
-    //   icon: BarChart3,
-    //   href: "/analytics",
-    //   active: pathname === "/analytics"
-    // }
   ]
 
   const handleNavigation = (href: string) => {
